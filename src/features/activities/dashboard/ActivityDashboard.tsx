@@ -10,17 +10,34 @@ interface Props {
   selectedActivity: Activity | undefined
   selectActivity: (id: string) => void
   cancelSelectActivity: () => void
+  editMode: boolean
+  openForm: (id: string) => void
+  closeForm: () => void
+  createOrEdit:(activity:Activity)=>void
+  deleteActivity:(id:string)=> void
 }
 
-const ActivityDashboard: React.FC<Props> = ({ activities, selectActivity, selectedActivity, cancelSelectActivity }) => {
+const ActivityDashboard: React.FC<Props> = ({
+  activities,
+  selectActivity,
+  selectedActivity,
+  cancelSelectActivity,
+  editMode,
+  openForm,
+  closeForm,
+  createOrEdit,
+  deleteActivity
+}) => {
   return (
     <Grid>
       <Grid.Column width='10'>
-        <ActivityList activities={activities} selectActivity = {selectActivity}/>
+        <ActivityList activities={activities} selectActivity={selectActivity} deleteActivity={deleteActivity}/>
       </Grid.Column>
       <Grid.Column width='6'>
-        {selectedActivity && <ActivityDetails activity={selectedActivity} cancelSelectActivity={cancelSelectActivity}/>}
-        <ActivityForm />
+        {selectedActivity && !editMode && (
+          <ActivityDetails activity={selectedActivity} cancelSelectActivity={cancelSelectActivity} openForm={openForm} />
+        )}
+        {editMode && <ActivityForm closeForm={closeForm} activity={selectedActivity} createOrEdit={createOrEdit} />}
       </Grid.Column>
     </Grid>
   )
