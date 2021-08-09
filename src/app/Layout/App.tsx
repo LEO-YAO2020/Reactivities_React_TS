@@ -7,14 +7,23 @@ import NavBar from './NavBar'
 import styles from './App.module.scss'
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard'
 import { v4 as uuid } from 'uuid'
+import agent from '../api/agent'
+import LoadingComponent from './LoadingComponent'
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([])
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined)
   const [editMode, setEditMode] = useState(false)
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
-    Axios.get<Activity[]>('http://localhost:5000/api/activities').then((res) => {
-      setActivities(res.data)
+    agent.Activities.list().then((res) => {
+      let activities: Activity[] = []
+      res.forEach((activity) => {
+        activity.date = activity.date.split('T')[0]
+        activities.push(activity)
+      })
+      setActivities(activities)
+      setLoading(false)
     })
   }, [])
 
@@ -47,6 +56,10 @@ function App() {
     setActivities([...activities.filter((item) => item.id !== id)])
   }
 
+  if (loading) {
+    return <LoadingComponent content='Loading'/>
+  }
+
   return (
     <>
       <NavBar openForm={handleFormOpen} />
@@ -61,7 +74,7 @@ function App() {
             openForm={handleFormOpen}
             closeForm={handleFormClose}
             createOrEdit={handleCreateOrEditActivity}
-            deleteActivity = {handleDeleteActivity}
+            deleteActivity={handleDeleteActivity}
           />
         </List>
       </Container>
