@@ -9,7 +9,7 @@ const ActivityList: React.FC = () => {
   const { groupActivities } = activityStore
   return (
     <>
-      {groupActivities.map(([group, activities], index) => (
+      {groupActivities.map(([group, activities]) => (
         <Fragment key={group}>
           <Header sub color='teal'>
             {group}
