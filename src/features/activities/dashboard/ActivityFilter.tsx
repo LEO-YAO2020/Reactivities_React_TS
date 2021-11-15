@@ -1,3 +1,5 @@
+
+import { observer } from 'mobx-react-lite'
 import Calendar from 'react-calendar'
 import { Header, Menu } from 'semantic-ui-react'
 
@@ -16,4 +18,4 @@ const ActivityFilter = () => {
   )
 }
 
-export default ActivityFilter
+export default observer(ActivityFilter)

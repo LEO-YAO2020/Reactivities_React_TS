@@ -1,9 +1,19 @@
+import { User, UserFormValues } from './../models/user'
 import { Activity } from './../models/activity'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { toast } from 'react-toastify'
 import { history } from '../..'
+import { store } from '../stores/store'
 
 axios.defaults.baseURL = 'http://localhost:5000/api'
+
+axios.interceptors.request.use((config) => {
+  const token = store.commonStore.token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -17,7 +27,7 @@ axios.interceptors.response.use(
     return response
   },
   (error: AxiosError) => {
-    const { data, status,config } = error.response!
+    const { data, status, config } = error.response!
     switch (status) {
       case 400:
         if (typeof data === 'string') {
@@ -35,7 +45,7 @@ axios.interceptors.response.use(
             }
           }
           throw modalStateErrors.flat()
-        }else{
+        } else {
           toast.error(data)
         }
         break
@@ -72,7 +82,7 @@ axios.interceptors.response.use(
       default:
         toast.error(`Connection error(${error.response?.status})!`)
     }
-    return new Promise(() => {})
+    return Promise.reject(error)
   }
 )
 const responseBody = <T>(response: AxiosResponse<T>) => response.data
@@ -92,8 +102,15 @@ const Activities = {
   delete: (id: string) => request.delete<void>(`/activities/${id}`)
 }
 
+const Account = {
+  current: () => request.get<User>('/account'),
+  login: (user: UserFormValues) => request.post<User>('/account/login', user),
+  register: (user: UserFormValues) => request.post<User>('/account/register', user)
+}
+
 const agent = {
-  Activities
+  Activities,
+  Account
 }
 
 export default agent
