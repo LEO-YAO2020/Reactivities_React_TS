@@ -21,10 +21,10 @@ const NavBar: React.FC = () => {
           <Button positive content='Create Activity' as={NavLink} to='/createActivity' />
         </Menu.Item>
         <Menu.Item position='right'>
-          <Image src={user?.Image || '/assets/user.png'} avatar spaced='right' />
+          <Image src={user?.image || '/assets/user.png'} avatar spaced='right' />
           <Dropdown pointing='top left' text={user?.displayName}>
             <Dropdown.Menu>
-              <Dropdown.Item as={Link} to={`/profile/${user?.userName}`} text='My Profile' icon='user' />
+              <Dropdown.Item as={Link} to={`/profile/${user?.username}`} text='My Profile' icon='user' />
               <Dropdown.Item onClick={logout} text='Logout' icon='power' />
             </Dropdown.Menu>
           </Dropdown>
