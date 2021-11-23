@@ -15,6 +15,7 @@ import { useStore } from '../stores/store'
 import { useEffect } from 'react'
 import LoadingComponent from './LoadingComponent'
 import ModalContainer from '../common/modals/ModalContainer'
+import ProfilePage from '../../features/profiles/ProfilePage'
 
 function App() {
   const location = useLocation()
@@ -43,9 +44,9 @@ function App() {
             <NavBar />
             <Container className={styles.container}>
               <Switch>
-                {/* any roots that match the forward slash plus something else is going to mach this */}
                 <Route path='/activities' component={ActivityDashboard} exact />
                 <Route path='/activities/:id' component={ActivityDetails} />
+                <Route path='/profiles/:username' component={ProfilePage} />
                 <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
                 <Route path={'/testError'} component={TestErrors} />
                 <Route path={'/login'} component={LoginForm} />
