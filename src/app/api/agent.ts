@@ -113,15 +113,17 @@ const Account = {
 
 const Profiles = {
   get: (username: string) => request.get<Profile>(`/profiles/${username}`),
-  uploadPhoto:(file:Blob)=>{
+  uploadPhoto: (file: Blob) => {
     let formData = new FormData()
-    formData.append('File',file);
-    return axios.post<Photo>('photos',formData,{
-      headers:{'Content-type':'multipart/form-data'}
+    formData.append('File', file)
+    return axios.post<Photo>('photos', formData, {
+      headers: { 'Content-type': 'multipart/form-data' }
     })
   },
-  setMainPhoto:(id:string)=>request.post(`/photos/${id}/setMain`,{}),
-  deletePhoto:(id:string)=>request.delete(`/photos/${id}`)
+  setMainPhoto: (id: string) => request.post(`/photos/${id}/setMain`, {}),
+  deletePhoto: (id: string) => request.delete(`/photos/${id}`),
+  updateFollowing: (username: string) => request.post(`/follow/${username}`, {}),
+  listFollowings: (username: string, predicate: string) => request.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
 }
 
 const agent = {
