@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite'
 import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
 import { Grid, Loader } from 'semantic-ui-react'
-import LoadingComponent from '../../../app/Layout/LoadingComponent'
 import { PagingParams } from '../../../app/models/pagination'
 import { useStore } from '../../../app/stores/store'
 import ActivityFilter from './ActivityFilter'
@@ -11,7 +10,7 @@ import ActivityListItemPlaceholder from './ActivityListPlaceholder'
 
 const ActivityDashboard: React.FC = () => {
   const { activityStore } = useStore()
-  const { loadActivities, activitiesRegistry, setPagingParams, pagination, groupActivities } = activityStore
+  const { loadActivities, activitiesRegistry, setPagingParams, pagination } = activityStore
   const [loadingNext, setLoadingNext] = useState(false)
   useEffect(() => {
     if (activitiesRegistry.size <= 1) loadActivities()
@@ -37,8 +36,8 @@ const ActivityDashboard: React.FC = () => {
             pageStart={0}
             hasMore={!loadingNext && !!pagination && pagination!.totalPages > pagination!.currentPage}
             loadMore={handleGetNext}
-            loader={<Loader active={loadingNext} />}
             initialLoad={false}
+            
           >
             <ActivityList />
           </InfiniteScroll>
@@ -46,6 +45,9 @@ const ActivityDashboard: React.FC = () => {
       </Grid.Column>
       <Grid.Column width='6'>
         <ActivityFilter />
+      </Grid.Column>
+      <Grid.Column width='10'>
+        <Loader active={loadingNext} />
       </Grid.Column>
     </Grid>
   )

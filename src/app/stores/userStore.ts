@@ -21,6 +21,7 @@ export default class UserStore {
       history.push('/activities')
       store.modalStore.closeModal()
     } catch (error) {
+      history.push('/')
       throw error
     }
   }

@@ -8,12 +8,14 @@ import App from './app/Layout/App'
 import { MobxProvider } from './app/stores/store'
 import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
+import ScrollToTop from './app/Layout/ScrollToTop';
 
 export const history = createBrowserHistory();
 
 ReactDOM.render(
   <MobxProvider>
     <Router history={history}>
+      <ScrollToTop/>
       <App />
     </Router>
   </MobxProvider>,
